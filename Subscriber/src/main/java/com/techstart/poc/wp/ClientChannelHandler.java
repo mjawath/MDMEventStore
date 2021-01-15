@@ -34,17 +34,23 @@ public class ClientChannelHandler implements CompletionHandler<Integer, Attachme
             att.setReadMode(false);
             buffer.clear();
 
+            System.out.println("enter a message to server "+client);
             Scanner sc = new Scanner(System.in);
             String user = sc.nextLine();
+            if("close".equalsIgnoreCase(user)){
+
+                try {
+                    att.getClient().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             byte[] data = user.getBytes(Charset.forName("UTF-8"));
             buffer.put(data);
             buffer.flip();
             att.getClient().write(buffer, att, this);
-            // 2. Close the connection
-//            try {
-//                att.getClient().close();
-//            } catch (IOException e) {
-//            }
+
         } else {
             // When the write operation is complete, it will come in here.
             att.setReadMode(true);
