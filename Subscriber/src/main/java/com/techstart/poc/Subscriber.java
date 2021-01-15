@@ -36,7 +36,7 @@ public class Subscriber {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
         Subscriber.connect("one");
-        Subscriber.connect("two");
+//        Subscriber.connect("two");
         try {
             Thread.currentThread().join();
         } catch (InterruptedException e) {

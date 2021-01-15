@@ -32,7 +32,7 @@ public class MoMServer {
             public void completed(AsynchronousSocketChannel client, Attachment att) {
                 try {
                     SocketAddress clientAddr = client.getRemoteAddress();
-                    System.out.println("Receive a new connection:" + clientAddr);
+                    System.out.println("Received a new connection:" + clientAddr);
 
                     // After receiving a new connection, the server should call the accept method again and wait for the new connection to come in.
 

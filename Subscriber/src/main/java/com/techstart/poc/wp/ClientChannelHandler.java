@@ -26,13 +26,12 @@ public class ClientChannelHandler implements CompletionHandler<Integer, Attachme
             byte[] bytes = new byte[buffer.limit()];
             buffer.get(bytes);
             String msg = new String(bytes, Charset.forName("UTF-8"));
-            System.out.println("Receive response data from the server: ${client} "+
+            System.out.println("Receive response data from the server:  "+
                     client + msg);
 
             // Next, there are two options:
             // 1. Send new data to the server
             att.setReadMode(false);
-            buffer.clear();
 
             System.out.println("enter a message to server "+client);
             Scanner sc = new Scanner(System.in);
@@ -47,6 +46,7 @@ public class ClientChannelHandler implements CompletionHandler<Integer, Attachme
             }
 
             byte[] data = user.getBytes(Charset.forName("UTF-8"));
+            buffer.clear();
             buffer.put(data);
             buffer.flip();
             att.getClient().write(buffer, att, this);

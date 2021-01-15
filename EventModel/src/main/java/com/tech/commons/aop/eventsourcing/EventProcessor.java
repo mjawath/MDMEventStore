@@ -1,6 +1,6 @@
 package com.tech.commons.aop.eventsourcing;
 
-import com.tech.commons.aop.eventsourcing.wp.Server;
+//import com.tech.commons.aop.eventsourcing.wp.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ public class EventProcessor {
     private Publisher publisher;
     private List<Subscriber> subscribers;
 
-    private Server server;
+//    private Server server;
 
     public void loadEngine(){
 
