@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 //@Component
 public class Receiver {
 
-    @JmsListener(destination = "eventQ", containerFactory = "myFactory")
+    @JmsListener(destination = "eventQ||wrong", containerFactory = "myFactory")
     public void receiveMessage(String  email) {
         System.out.println("Received <" + email + ">");
     }

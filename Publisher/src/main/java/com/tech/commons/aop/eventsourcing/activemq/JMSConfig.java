@@ -23,6 +23,8 @@ public class JMSConfig {
     @Value("${spring.artemis.broker}")
     private String brokerUrl;
 
+
+
     @Bean
     public ActiveMQConnectionFactory senderActiveMQConnectionFactory() {
         return new ActiveMQConnectionFactory(brokerUrl);
@@ -33,7 +35,7 @@ public class JMSConfig {
         return new CachingConnectionFactory(
                 senderActiveMQConnectionFactory());
     }
-
+//
     @Bean
     public JmsTemplate jmsTemplate() {
         return new JmsTemplate(cachingConnectionFactory());

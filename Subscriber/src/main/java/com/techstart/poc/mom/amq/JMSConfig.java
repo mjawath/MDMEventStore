@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.jms.connection.CachingConnectionFactory;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
@@ -28,13 +30,29 @@ public class JMSConfig {
     }
 
     @Bean
-    public JmsListenerContainerFactory<?> myFactory(
-                                                    DefaultJmsListenerContainerFactoryConfigurer configurer) {
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        // This provides all boot's default to this factory, including the message converter
-        configurer.configure(factory, receiverActiveMQConnectionFactory());
-        // You could still override some of Boot's default if necessary.
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+        DefaultJmsListenerContainerFactory factory =
+                new DefaultJmsListenerContainerFactory();
+        factory
+                .setConnectionFactory(receiverActiveMQConnectionFactory());
+        factory.setConcurrency("3-10");
+
         return factory;
+    }
+    @Bean
+    public DefaultMessageListenerContainer messageListener() {
+        DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
+        container.setConnectionFactory(this.receiverActiveMQConnectionFactory());
+        container.setDestinationName("eventQ");
+        container.setMessageListener(new Consumer());
+        return container;
+    }
+    @Bean // Serialize message content to json using TextMessage
+    public MessageConverter jacksonJmsMessageConverter() {
+        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+        converter.setTargetType(MessageType.TEXT);
+        converter.setTypeIdPropertyName("_type");
+        return converter;
     }
 
 

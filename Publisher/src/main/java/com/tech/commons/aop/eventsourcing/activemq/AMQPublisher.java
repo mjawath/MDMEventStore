@@ -17,7 +17,8 @@ public class AMQPublisher implements Publisher {
 
     @Override
     public void publish(Event event) {
-        template.convertAndSend(queue, "Hello World from Spring Boot!");
+//        template.convertAndSend(queue, "Hello World from Spring Boot!");
+        template.convertAndSend(queue, event);
 
     }
 }
