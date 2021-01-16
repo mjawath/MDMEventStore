@@ -9,7 +9,7 @@ import java.util.concurrent.Future;
 
 public class Client {
 
-    public static void main(String[] args) throws Exception {
+    public static void mainx(String[] args) throws Exception {
         AsynchronousSocketChannel client = AsynchronousSocketChannel.open();
         // In Future form
         Future<?> future = client.connect(new InetSocketAddress("localhost",8080));

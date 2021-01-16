@@ -19,6 +19,8 @@ public class Event  extends BaseEntityString {
 //    private Long id;
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
+    private String domain;
+    private Byte[] payload;
 
     public Date getTimestamp() {
         return timestamp;
@@ -28,11 +30,20 @@ public class Event  extends BaseEntityString {
         this.timestamp = timestamp;
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public Byte[] getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Byte[] payload) {
+        this.payload = payload;
+    }
 }

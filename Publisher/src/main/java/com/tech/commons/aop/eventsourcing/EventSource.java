@@ -74,6 +74,14 @@ public class EventSource {
         return "value";
     }
 
+    //within certain transaction
+    public void persistEvent(Event event){
+        //if transaction is still active
+        repo.save(event);
+    }
+
+
+
 //    @Around("execution(* com.tech.commons.aop.eventsourcing.GenericService.callsomething())")
 //    public Object aroundPersist(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 //        long start = System.currentTimeMillis();

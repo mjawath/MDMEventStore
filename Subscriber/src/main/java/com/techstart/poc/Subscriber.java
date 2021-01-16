@@ -34,7 +34,7 @@ public class Subscriber {
 
     }
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
+    public static void xmain(String[] args) throws InterruptedException, ExecutionException, IOException {
         Subscriber.connect("one");
 //        Subscriber.connect("two");
         try {

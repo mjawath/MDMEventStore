@@ -1,20 +1,15 @@
 package com.tech.commons.aop.eventsourcing;
 
-import com.tech.commons.aop.eventsourcing.wp.Server;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.tech.commons.aop.eventsourcing.kafka.KafkaPublisher;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class EventProcessor {
 
-
-    Logger LOG = LoggerFactory.getLogger(EventProcessor.class);
-
+    Logger LOG = Logger.getLogger(EventProcessor.class.toString());
     private Publisher publisher;
-    private List<Subscriber> subscribers;
-
-    private Server server;
+//    private List<Subscriber> subscribers;
 
     public void loadEngine(){
 
@@ -29,20 +24,26 @@ public class EventProcessor {
         publisher.publish(ev);
     }
     public void loadSubscribers(){
-
+        //forget about this
     }
 
     public void loadEvents(){
 
+        //last events
+
+
     }
 
-    public void Subscribe(Subscriber sub){
-        subscribers.add(sub);
-    }
+
 
     public void fanOut(){
-        //for all subscriber
-        System.out.println("fanning out");
-
+        publisher = new KafkaPublisher();
+        //for all active subscriber
+        System.out.println("fanning out for all active subscribers ");
+        Event event = new Event();
+        event.setId("1");
+        event.setTimestamp(new Date());
+        publisher.publish(event);
+        LOG.info("event ");
     }
 }
