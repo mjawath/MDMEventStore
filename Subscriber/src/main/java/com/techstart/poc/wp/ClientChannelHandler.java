@@ -50,6 +50,8 @@ public class ClientChannelHandler implements CompletionHandler<Integer, Attachme
             buffer.put(data);
             buffer.flip();
             att.getClient().write(buffer, att, this);
+            buffer.clear();
+
 
         } else {
             // When the write operation is complete, it will come in here.
