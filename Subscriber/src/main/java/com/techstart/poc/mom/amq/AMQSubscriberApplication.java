@@ -1,6 +1,7 @@
 package com.techstart.poc.mom.amq;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jms.annotation.EnableJms;
 
@@ -8,7 +9,9 @@ import org.springframework.jms.annotation.EnableJms;
 @EnableJms
 public class AMQSubscriberApplication {
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(AMQSubscriberApplication.class, args);
+        SpringApplication application = new SpringApplication(AMQSubscriberApplication.class);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        application.run(args);
     }
 
 

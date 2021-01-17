@@ -22,9 +22,6 @@ public class JMSConfig {
 
     @Value("${spring.artemis.broker}")
     private String brokerUrl;
-
-
-
     @Bean
     public ActiveMQConnectionFactory senderActiveMQConnectionFactory() {
         return new ActiveMQConnectionFactory(brokerUrl);
@@ -38,15 +35,18 @@ public class JMSConfig {
 //
     @Bean
     public JmsTemplate jmsTemplate() {
-        return new JmsTemplate(cachingConnectionFactory());
+        final JmsTemplate jmsTemplate = new JmsTemplate(cachingConnectionFactory());
+        jmsTemplate.setPubSubDomain(true);//pub sub -should be configurable
+        return jmsTemplate;
     }
 
-    @Bean // Serialize message content to json using TextMessage
-    public MessageConverter jacksonJmsMessageConverter() {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setTargetType(MessageType.TEXT);
-        converter.setTypeIdPropertyName("_type");
-        return converter;
-    }
+
+//    @Bean // Serialize message content to json using TextMessage
+//    public MessageConverter jacksonJmsMessageConverter() {
+//        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+//        converter.setTargetType(MessageType.TEXT);
+//        converter.setTypeIdPropertyName("_type");
+//        return converter;
+//    }
 
 }

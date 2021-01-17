@@ -24,6 +24,9 @@ public class JMSConfig {
     @Value("${spring.artemis.broker}")
     private String brokerUrl;
 
+    @Value("${eventQ}")
+    private String queue;
+
     @Bean
     public ActiveMQConnectionFactory receiverActiveMQConnectionFactory() {
         return new ActiveMQConnectionFactory(brokerUrl);
@@ -43,17 +46,19 @@ public class JMSConfig {
     public DefaultMessageListenerContainer messageListener() {
         DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
         container.setConnectionFactory(this.receiverActiveMQConnectionFactory());
-        container.setDestinationName("eventQ");
+        container.setDestinationName(queue);
+//        container.setMessageConverter(jacksonJmsMessageConverter());
         container.setMessageListener(new Consumer());
+        container.setPubSubDomain(true);
         return container;
     }
-    @Bean // Serialize message content to json using TextMessage
-    public MessageConverter jacksonJmsMessageConverter() {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setTargetType(MessageType.TEXT);
-        converter.setTypeIdPropertyName("_type");
-        return converter;
-    }
+//    @Bean // Serialize message content to json using TextMessage
+//    public MessageConverter jacksonJmsMessageConverter() {
+//        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+//        converter.setTargetType(MessageType.OBJECT);
+//        converter.setTypeIdPropertyName("_type");
+//        return converter;
+//    }
 
 
 

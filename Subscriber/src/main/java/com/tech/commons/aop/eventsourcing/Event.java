@@ -1,4 +1,4 @@
-package com.techstart.poc;
+package com.tech.commons.aop.eventsourcing;
 
 
 import com.mycompany.entitybase.BaseEntityString;
