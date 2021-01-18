@@ -18,7 +18,7 @@ import java.util.Date;
 @Component
 @Aspect
 //@Order(Integer.MAX_VALUE)
-public class EventSource {
+public class EventAOPProcessor {
 
     @Autowired
     private EventRepo repo;
@@ -73,14 +73,6 @@ public class EventSource {
 
         return "value";
     }
-
-    //within certain transaction
-    public void persistEvent(Event event){
-        //if transaction is still active
-        repo.save(event);
-    }
-
-
 
 //    @Around("execution(* com.tech.commons.aop.eventsourcing.GenericService.callsomething())")
 //    public Object aroundPersist(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {

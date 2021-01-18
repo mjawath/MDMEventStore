@@ -6,6 +6,7 @@
 		<module>Subscriber</module>
 		<module>Publisher</module>
 		<module>EventModel</module>
+		<module>eventsidecar</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>

@@ -1,13 +1,14 @@
 package com.tech.commons.aop.eventsourcing;
 
-public class EventService {
+import com.mycompany.entitybase.dao.BaseDAO;
+import com.mycompany.entitybase.service.BaseService;
+import org.springframework.stereotype.Component;
 
-    public void save(){
-        //save the event
+@Component
+public class EventService extends BaseService<Event> {
+
+
+    public EventService(EventRepo dao) {
+        super(dao);
     }
-
-    public Event getEvent(){
-        throw new UnsupportedOperationException();
-    }
-
 }
