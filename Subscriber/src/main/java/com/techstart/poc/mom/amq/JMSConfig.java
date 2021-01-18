@@ -52,6 +52,7 @@ public class JMSConfig {
         container.setPubSubDomain(true);
         container.setSubscriptionDurable(true);
         container.setClientId(Constants.subid);
+        container.setDurableSubscriptionName(Constants.DurableSubscriptionName);
         return container;
     }
 //    @Bean // Serialize message content to json using TextMessage
