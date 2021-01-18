@@ -54,7 +54,7 @@ public class EventAOPProcessor {
         return "value";
     }
 
-    @After("execution(* com.tech.commons.aop.eventsourcing.GenericService.callsomething())")
+//    @After("execution(* com.tech.commons.aop.eventsourcing.GenericService.callsomething())")
     public Object persist(final JoinPoint proceedingJoinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         System.out.println("After event sourcing through aop");
