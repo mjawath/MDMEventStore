@@ -13,24 +13,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import javax.persistence.Entity;
 import java.util.List;
 
-@SpringBootApplication(scanBasePackages = {"com.mycompany.dummy"})
-@EnableJpaRepositories(basePackages = {"com.mycompany.dummy","com.tech.commons.aop.eventsourcing"},repositoryBaseClass = BaseRepositoryImpl.class)
-@EntityScan(basePackages = {"com.mycompany.dummy","com.tech.commons.aop.eventsourcing"})
+@SpringBootApplication
 public class AOPApplication {
     public static void main(String[] args) {
         SpringApplication.run(AOPApplication.class, args);
 
     }
 
-    @Bean
-    CommandLineRunner start(DummyService ds,EventRepo ev) {
-        return args -> {
 
-            Dummy d = ds.create(new Dummy());
-            System.out.println(d.getId());
-            for(Event e:ev.findAll()){
-                System.out.println(e.getTimestamp());
-            }
-        };
-    }
 }
