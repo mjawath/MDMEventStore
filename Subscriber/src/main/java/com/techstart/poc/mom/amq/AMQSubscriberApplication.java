@@ -9,6 +9,10 @@ import org.springframework.jms.annotation.EnableJms;
 @EnableJms
 public class AMQSubscriberApplication {
     public static void main(String[] args) throws Exception {
+        if(args.length>0){
+            Constants.subid=args[0];
+        }
+//        Constants.DurableSubscriptionName=args[1];
         SpringApplication application = new SpringApplication(AMQSubscriberApplication.class);
         application.setWebApplicationType(WebApplicationType.NONE);
         application.run(args);

@@ -10,11 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 @Entity
 public class Event  extends BaseEntityString {
 
+    private static final  int  serialVersionUID = 12546;
 //    @Id
 //    private Long id;
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,5 +47,15 @@ public class Event  extends BaseEntityString {
 
     public void setPayload(Byte[] payload) {
         this.payload = payload;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "timestamp=" + timestamp +
+                ", domain='" + domain + '\'' +
+                ", payload=" + Arrays.toString(payload) +
+                ", id='" + id + '\'' +
+                '}';
     }
 }

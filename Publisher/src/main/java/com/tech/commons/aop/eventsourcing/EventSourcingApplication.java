@@ -36,14 +36,13 @@ public class EventSourcingApplication   {
 
 
 		@Bean
-		CommandLineRunner start() {
+		CommandLineRunner start(EventProcessor ep) {
 			return args -> {
-//				log.info("Sending> ...");
-
-
-				EventProcessor ep = new EventProcessor();
-				ep.fanOut();
-				publisher.publish(new Event());
+//				while (true){
+					ep.fanOut();
+					Thread.sleep(20000);
+					ep.fanOut();
+//				}
 			};
 		}
 

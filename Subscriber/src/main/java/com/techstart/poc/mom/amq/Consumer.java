@@ -18,10 +18,10 @@ public class Consumer implements MessageListener{
                 ObjectMessage msgObj = (ObjectMessage) message;
                 Object obj = msgObj.getObject();
                 Event event = (Event) obj;
-                System.out.println(event);
+                log.info(event.toString());
             }
 
-            log.info("Received message: " + message.toString());
+//            log.info("Received message: " + message.toString());
 
 
         }catch (Exception ex) {

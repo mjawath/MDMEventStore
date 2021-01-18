@@ -50,6 +50,8 @@ public class JMSConfig {
 //        container.setMessageConverter(jacksonJmsMessageConverter());
         container.setMessageListener(new Consumer());
         container.setPubSubDomain(true);
+        container.setSubscriptionDurable(true);
+        container.setClientId(Constants.subid);
         return container;
     }
 //    @Bean // Serialize message content to json using TextMessage
@@ -61,5 +63,6 @@ public class JMSConfig {
 //    }
 
 
-
+//durable messages
+//    https://activemq.apache.org/how-do-durable-queues-and-topics-work
 }
