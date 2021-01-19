@@ -1,17 +1,14 @@
 package com.tech.commons.aop.eventsourcing;
 
-import org.aspectj.lang.JoinPoint;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.entitybase.BaseEntity;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Date;
 
@@ -20,80 +17,48 @@ import java.util.Date;
 //@Order(Integer.MAX_VALUE)
 public class EventAOPProcessor {
 
+
+    Logger logger = LoggerFactory.getLogger(EventAOPProcessor.class);
+
     @Autowired
     private EventRepo repo;
 
-    @Before("execution(* com.mycompany.entitybase.service.BaseService.create(*))")
-    public Object prePersist(final JoinPoint proceedingJoinPoint) throws Throwable {
+    @Autowired
+    private ObjectMapper mapper;
+
+    @Around("execution(* com.mycompany.entitybase.service.BaseService.create(*))")
+    public Object aroundCreate(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long start = System.currentTimeMillis();
-        System.out.println("Before - event sourcing through aop");
+        logger.info("Before - create save of BaseService");
 
         Object value;
-
         try {
-            value = proceedingJoinPoint.getSignature();
             Object[] args = proceedingJoinPoint.getArgs();
-            if(TransactionSynchronizationManager.isActualTransactionActive()){
-                System.out.println("transaction is active ................");
-            }
-            TransactionStatus transactionStatus = TransactionAspectSupport.currentTransactionStatus();
-            if(transactionStatus!=null){
-                System.out.println("transactionStatus");
-           }
-            Event s = new Event();
-            s.setTimestamp(new Date());
-            repo.save(s);
-        } catch (Throwable throwable) {
-            throw throwable;
+
+            Object per= args[0];
+
+                value=proceedingJoinPoint.proceed();
+                Event event = new Event();
+                event.setTimestamp(new Date());
+                String domainObjPayload = mapper.writeValueAsString(per);
+                event.setPayload(domainObjPayload);
+                if(value instanceof BaseEntity) {
+                    final Object id = ((BaseEntity) value).getId();
+                    event.setDomainId(String.valueOf(id));
+                    event.setDomain(value.getClass().toString());
+                }
+                final Event save = repo.save(event);
+            final String id = save.getId();
+            logger.info("Event is saved "+id);
+            logger.info("AOP proceeded to create ");
+        } catch (Exception e) {
+            logger.error("AOP event store had a issue ",e);
+            throw new RuntimeException(e);
         } finally {
-            long duration = System.currentTimeMillis() - start;
-
-        }
-        System.out.println("Before END event sourcing through aop Signature: "+value);
-
-        return "value";
-    }
-
-//    @After("execution(* com.tech.commons.aop.eventsourcing.GenericService.callsomething())")
-    public Object persist(final JoinPoint proceedingJoinPoint) throws Throwable {
-        long start = System.currentTimeMillis();
-        System.out.println("After event sourcing through aop");
-
-        Object value;
-
-        try {
-            value = proceedingJoinPoint.getSignature();
-        } catch (Throwable throwable) {
-            throw throwable;
-        } finally {
-            long duration = System.currentTimeMillis() - start;
-
-        }
-        System.out.println("After END event sourcing through aop");
-
-        return "value";
-    }
-
-//    @Around("execution(* com.tech.commons.aop.eventsourcing.GenericService.callsomething())")
-//    public Object aroundPersist(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-//        long start = System.currentTimeMillis();
-//        System.out.println("Around event sourcing through aop");
-//
-//        Object value = null;
-//
-//        try {
-//            value = proceedingJoinPoint.proceed();
-//            System.out.println("signature ..............");
-//            System.out.println(value);
-//        } catch (Throwable throwable) {
-//            throw throwable;
-//        } finally {
 //            long duration = System.currentTimeMillis() - start;
-//
-//        }
-//        System.out.println("Around END event sourcing through aop");
-//
-//        return "value";
-//    }
+        }
+        logger.info("After - create save of BaseService");
+        return value;
+    }
 }
 
